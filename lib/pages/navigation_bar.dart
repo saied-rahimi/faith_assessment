@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'home_page/home_page.dart';
 
 class MyNavigationBar extends StatefulWidget {
-  const MyNavigationBar({super.key});
+  const MyNavigationBar({super.key, this.page});
+  final int? page;
 
   @override
   State<MyNavigationBar> createState() => _MyNavigationBarState();
@@ -30,14 +31,17 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
               ),
               label: 'تنظیمات')
         ],
-        selectedIndex: currentIndex,
+        selectedIndex: widget.page ?? currentIndex,
         onDestinationSelected: (index) {
           setState(() {
             currentIndex = index;
           });
         },
       ),
-      body: [HomePage(), SettingPage()][currentIndex],
+      body: [
+        const HomePage(),
+        const SettingPage()
+      ][widget.page ?? currentIndex],
     );
   }
 }
