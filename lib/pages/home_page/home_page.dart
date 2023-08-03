@@ -1,3 +1,4 @@
+import 'package:faith_assessment/prefrences.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../model/my_dialog.dart';
@@ -12,26 +13,19 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   Map<String, bool> todos = {};
+  var memberData = [];
   final TextEditingController _todoTextController = TextEditingController();
+  getData() async {
+    var data = await MyPref().getMemberData();
+    setState(() {
+      memberData = data;
+    });
+  }
 
   @override
   void initState() {
     super.initState();
-    loadTodoMap();
-  }
-
-  Future<void> loadTodoMap() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    Map<String, bool> loadedTodos = {};
-    List<String>? todoList = prefs.getStringList('todos');
-    if (todoList != null) {
-      for (String todo in todoList) {
-        loadedTodos[todo] = false;
-      }
-    }
-    setState(() {
-      todos = loadedTodos;
-    });
+    getData();
   }
 
   Future<void> saveTodoMap() async {
@@ -66,28 +60,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    var data = [
-      {
-        'name': 'احمد',
-        'assessment': 'نماز: 50: تلاوت: 60 اذکار:30 مطالعه: 100 ',
-        'createdAt': '19/2/1401',
-      },
-      {
-        'name': 'محمود',
-        'assessment': 'نماز: 40: تلاوت: 20 اذکار:80 مطالعه: 75 ',
-        'createdAt': '19/2/1401',
-      },
-      {
-        'name': 'کریم',
-        'assessment': 'نماز: 10: تلاوت: 40 اذکار:20 مطالعه: 15 ',
-        'createdAt': '19/2/1401',
-      },
-      {
-        'name': 'مقصود',
-        'assessment': 'نماز: 60: تلاوت: 80 اذکار:20 مطالعه: 90 ',
-        'createdAt': '19/2/1401',
-      },
-    ];
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -99,7 +71,7 @@ class _HomePageState extends State<HomePage> {
         children: [
           Expanded(
             child: ListView.builder(
-              itemCount: data.length,
+              itemCount: memberData.length,
               itemBuilder: (context, index) {
                 // String todo = todos.keys.toList()[index];
                 // bool isCompleted = todos[todo]!;
@@ -109,11 +81,11 @@ class _HomePageState extends State<HomePage> {
                         context,
                         MaterialPageRoute(
                             builder: (context) => DetailsPage(
-                                  data: data[index],
+                                  data: memberData[index],
                                 )));
                   },
                   title: Text(
-                    data[index]['name'].toString(),
+                    memberData[index]['name'].toString(),
                     style: const TextStyle(
                         fontSize: 20, fontWeight: FontWeight.bold
                         // decoration:
@@ -121,7 +93,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                   ),
                   subtitle: Text(
-                    data[index]['assessment'].toString(),
+                    memberData[index]['assessment'].toString(),
                     style: const TextStyle(
                         fontSize: 12, fontWeight: FontWeight.normal
                         // decoration:
@@ -129,7 +101,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                   ),
                   trailing: Text(
-                    data[index]['createdAt'].toString(),
+                    memberData[index]['createdAt'].toString(),
                     style: TextStyle(color: Colors.grey[400]),
                   ),
                   // onLongPress: () => removeTodo(todo),

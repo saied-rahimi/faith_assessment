@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:faith_assessment/model/my_dialog.dart';
+import 'package:faith_assessment/pages/setting_page/members_page.dart';
 import 'package:faith_assessment/pages/navigation_bar.dart';
 import 'package:flutter/material.dart';
 
@@ -208,7 +209,6 @@ class _SettingPageState extends State<SettingPage> {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint('data is: $managerData');
     return SafeArea(
       child: Center(
         child: Column(
@@ -264,6 +264,12 @@ class _SettingPageState extends State<SettingPage> {
                       onTap: () {
                         if (index == 0) {
                           _showBottomSheet(context);
+                        }
+                        if (index == 1) {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const MemberPage()));
                         }
                       });
                 },
