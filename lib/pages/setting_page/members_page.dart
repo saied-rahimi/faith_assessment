@@ -1,4 +1,4 @@
-import 'package:faith_assessment/prefrences.dart';
+import 'package:faith_assessment/preferences.dart';
 import 'package:flutter/material.dart';
 
 class MemberPage extends StatefulWidget {
@@ -222,7 +222,6 @@ class _MemberPageState extends State<MemberPage> {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint('data is: $memberList');
     return Scaffold(
       appBar: AppBar(
         title: const Text(

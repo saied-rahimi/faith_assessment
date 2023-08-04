@@ -1,3 +1,4 @@
+import 'package:faith_assessment/preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -25,16 +26,41 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         fontFamily: 'iransans',
         useMaterial3: true,
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.blueGrey,
+        primaryColor: Colors.blueGrey,
       ),
       home: const HomeScreen(),
     );
   }
 }
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  List defaultAssess = [
+    {'title': 'جماعت', 'type': 'متن'},
+    {'title': 'تلاوت', 'type': 'متن'},
+    {'title': 'اذکار', 'type': 'متن'},
+    {'title': 'مطالعه', 'type': 'متن'},
+  ];
+  getData()async{
+    var data = await MyPref().getAssessData();
+    if(data.isEmpty){
+      MyPref().setAssessData(defaultAssess);
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getData();
+  }
   @override
   Widget build(BuildContext context) {
     return const MyNavigationBar();

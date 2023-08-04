@@ -1,142 +1,177 @@
+import 'package:faith_assessment/preferences.dart';
 import 'package:flutter/material.dart';
-
+import '../../model/const.dart';
 import 'add_assess.dart';
 
-class DetailsPage extends StatelessWidget {
-  const DetailsPage({super.key, required this.data});
-  final Map data;
+class DetailsPage extends StatefulWidget {
+  const DetailsPage({super.key, required this.name});
+  final String name;
+
+  @override
+  State<DetailsPage> createState() => _DetailsPageState();
+}
+
+class _DetailsPageState extends State<DetailsPage> {
+  List assessments = [];
+  getData() async {
+    try {
+      var assessData = await MyPref().getUserAssessment();
+      setState(() {
+        assessData[widget.name] != null
+            ? assessments = assessData[widget.name]
+            : null;
+      });
+      assessments.sort((a, b) => b['createdAt'].compareTo(a['createdAt']));
+    } catch (e) {
+      debugPrint('getting assessments data pref error is: $e');
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getData();
+  }
+
   @override
   Widget build(BuildContext context) {
-    List<Map<String, dynamic>> assessment = [
-      {
-        'createdAt': '19/2/1401',
-        'assessment': [
-          {
-            'title': 'نماز',
-            'type': 'textInput',
-            'value': '60',
-          },
-          {
-            'title': 'تلاوت',
-            'type': 'textInput',
-            'value': '70',
-          },
-          {
-            'title': 'اذکار',
-            'type': 'textInput',
-            'value': '90',
-          },
-          {
-            'title': 'مطالعه',
-            'type': 'textInput',
-            'value': '60',
-          },
-          {
-            'title': 'صوت',
-            'type': 'bool',
-            'value': true,
-          },
-        ]
-      },
-      {
-        'createdAt': '19/2/1401',
-        'assessment': [
-          {
-            'title': 'نماز',
-            'type': 'textInput',
-            'value': '60',
-          },
-          {
-            'title': 'تلاوت',
-            'type': 'textInput',
-            'value': '70',
-          },
-          {
-            'title': 'اذکار',
-            'type': 'textInput',
-            'value': '90',
-          },
-          {
-            'title': 'مطالعه',
-            'type': 'textInput',
-            'value': '60',
-          },
-          {
-            'title': 'صوت',
-            'type': 'bool',
-            'value': true,
-          },
-        ]
-      },
-      {
-        'createdAt': '19/2/1401',
-        'assessment': [
-          {
-            'title': 'نماز',
-            'type': 'textInput',
-            'value': '60',
-          },
-          {
-            'title': 'تلاوت',
-            'type': 'textInput',
-            'value': '70',
-          },
-          {
-            'title': 'اذکار',
-            'type': 'textInput',
-            'value': '90',
-          },
-          {
-            'title': 'مطالعه',
-            'type': 'textInput',
-            'value': '60',
-          },
-          {
-            'title': 'صوت',
-            'type': 'bool',
-            'value': true,
-          },
-        ]
-      },
-      {
-        'createdAt': '19/2/1401',
-        'assessment': [
-          {
-            'title': 'نماز',
-            'type': 'textInput',
-            'value': '60',
-          },
-          {
-            'title': 'تلاوت',
-            'type': 'textInput',
-            'value': '70',
-          },
-          {
-            'title': 'اذکار',
-            'type': 'textInput',
-            'value': '90',
-          },
-          {
-            'title': 'مطالعه',
-            'type': 'textInput',
-            'value': '60',
-          },
-          {
-            'title': 'صوت',
-            'type': 'bool',
-            'value': true,
-          },
-        ]
-      },
-    ];
+    // List<Map<String, dynamic>> assessment = [
+    //   {
+    //     'createdAt': '19/2/1401',
+    //     'assessment': [
+    //       {
+    //         'title': 'نماز',
+    //         'type': 'textInput',
+    //         'value': '60',
+    //       },
+    //       {
+    //         'title': 'تلاوت',
+    //         'type': 'textInput',
+    //         'value': '70',
+    //       },
+    //       {
+    //         'title': 'اذکار',
+    //         'type': 'textInput',
+    //         'value': '90',
+    //       },
+    //       {
+    //         'title': 'مطالعه',
+    //         'type': 'textInput',
+    //         'value': '60',
+    //       },
+    //       {
+    //         'title': 'صوت',
+    //         'type': 'bool',
+    //         'value': true,
+    //       },
+    //     ]
+    //   },
+    //   {
+    //     'createdAt': '19/2/1401',
+    //     'assessment': [
+    //       {
+    //         'title': 'نماز',
+    //         'type': 'textInput',
+    //         'value': '60',
+    //       },
+    //       {
+    //         'title': 'تلاوت',
+    //         'type': 'textInput',
+    //         'value': '70',
+    //       },
+    //       {
+    //         'title': 'اذکار',
+    //         'type': 'textInput',
+    //         'value': '90',
+    //       },
+    //       {
+    //         'title': 'مطالعه',
+    //         'type': 'textInput',
+    //         'value': '60',
+    //       },
+    //       {
+    //         'title': 'صوت',
+    //         'type': 'bool',
+    //         'value': true,
+    //       },
+    //     ]
+    //   },
+    //   {
+    //     'createdAt': '19/2/1401',
+    //     'assessment': [
+    //       {
+    //         'title': 'نماز',
+    //         'type': 'textInput',
+    //         'value': '60',
+    //       },
+    //       {
+    //         'title': 'تلاوت',
+    //         'type': 'textInput',
+    //         'value': '70',
+    //       },
+    //       {
+    //         'title': 'اذکار',
+    //         'type': 'textInput',
+    //         'value': '90',
+    //       },
+    //       {
+    //         'title': 'مطالعه',
+    //         'type': 'textInput',
+    //         'value': '60',
+    //       },
+    //       {
+    //         'title': 'صوت',
+    //         'type': 'bool',
+    //         'value': true,
+    //       },
+    //     ]
+    //   },
+    //   {
+    //     'createdAt': '19/2/1401',
+    //     'assessment': [
+    //       {
+    //         'title': 'نماز',
+    //         'type': 'textInput',
+    //         'value': '60',
+    //       },
+    //       {
+    //         'title': 'تلاوت',
+    //         'type': 'textInput',
+    //         'value': '70',
+    //       },
+    //       {
+    //         'title': 'اذکار',
+    //         'type': 'textInput',
+    //         'value': '90',
+    //       },
+    //       {
+    //         'title': 'مطالعه',
+    //         'type': 'textInput',
+    //         'value': '60',
+    //       },
+    //       {
+    //         'title': 'صوت',
+    //         'type': 'bool',
+    //         'value': true,
+    //       },
+    //     ]
+    //   },
+    // ];
     return Scaffold(
       appBar: AppBar(
-        title: Text(data['name']),
+        title: Text(
+          widget.name.toString(),
+          style: const TextStyle(fontSize: 18),
+        ),
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const AddAssess()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => AddAssess(
+                          name: widget.name.toString(), data: assessments)));
             },
             icon: const Icon(Icons.add_circle_outlined),
           )
@@ -146,23 +181,25 @@ class DetailsPage extends StatelessWidget {
         children: [
           Expanded(
             child: ListView.builder(
-              itemCount: assessment.length,
+              itemCount: assessments.length,
               itemBuilder: (context, index) {
-                List? assessmentList = assessment[index]['assessment'];
+                List assessmentList = assessments[index]['assessment'];
+                assessmentList.sort((a, b) => a['type'].compareTo(b['type']));
                 return Padding(
                   padding:
                       const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 24, vertical: 8),
-                        child: Text(assessment[index]['createdAt'].toString()),
+                        child: Text(
+                            faNumber(assessments[index]['date'].toString())),
                       ),
                       Container(
                         decoration: BoxDecoration(
-                          color: Colors.grey[200],
+                          color: Colors.grey[100],
                           borderRadius:
                               const BorderRadius.all(Radius.circular(20)),
                         ),
@@ -170,8 +207,8 @@ class DetailsPage extends StatelessWidget {
                           padding: const EdgeInsets.all(10.0),
                           child: Column(
                             children:
-                                List.generate(assessmentList!.length, (index) {
-                              if (assessmentList[index]['type'] == 'bool') {
+                                List.generate(assessmentList.length, (index) {
+                              if (assessmentList[index]['type'] == 'چک باکس') {
                                 return Column(
                                   children: [
                                     Padding(
@@ -212,8 +249,9 @@ class DetailsPage extends StatelessWidget {
                                       children: [
                                         Text(
                                             '${assessmentList[index]['title']}:'),
-                                        Text(assessmentList[index]['value']
-                                            .toString()),
+                                        Text(faNumber(assessmentList[index]
+                                                ['value']
+                                            .toString())),
                                       ],
                                     ),
                                     if (index != assessmentList.length - 1)

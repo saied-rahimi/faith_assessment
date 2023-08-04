@@ -1,11 +1,11 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:faith_assessment/model/my_dialog.dart';
+import 'package:faith_assessment/pages/setting_page/assessment_page.dart';
 import 'package:faith_assessment/pages/setting_page/members_page.dart';
 import 'package:faith_assessment/pages/navigation_bar.dart';
 import 'package:flutter/material.dart';
-
-import '../../prefrences.dart';
+import '../../preferences.dart';
 
 class SettingPage extends StatefulWidget {
   const SettingPage({super.key});
@@ -26,6 +26,10 @@ class _SettingPageState extends State<SettingPage> {
     {
       'title': 'اعضاء',
       'leading': Icons.add_chart_sharp,
+    },
+    {
+      'title': 'ارزیابی',
+      'leading': Icons.dataset_outlined,
     },
   ];
   Map? managerData;
@@ -61,11 +65,35 @@ class _SettingPageState extends State<SettingPage> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               // mainAxisSize: MainAxisSize.min,
               children: [
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 15.0),
+                  child: DropdownButtonFormField<String>(
+                    borderRadius: BorderRadius.circular(10),
+                    decoration: const InputDecoration(labelText: 'صنف چندم؟'),
+                    items: [
+                      '1',
+                      '2',
+                      '3',
+                      '4',
+                    ]
+                        .map((option) => DropdownMenuItem(
+                              value: option,
+                              child: Text(option),
+                            ))
+                        .toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        dropValue = value;
+                      });
+                      // Handle the selected value
+                    },
+                  ),
+                ),
+                const SizedBox(height: 16.0),
                 Form(
                   key: bottomSheetNameKey,
                   child: TextFormField(
                     controller: bottomSheetNameController,
-                    autofocus: true,
                     validator: bottomSheetNameValidator,
                     style: const TextStyle(
                       fontSize: 16,
@@ -93,7 +121,6 @@ class _SettingPageState extends State<SettingPage> {
                   key: bottomSheetLocationKey,
                   child: TextFormField(
                     controller: bottomSheetLocationController,
-                    autofocus: true,
                     validator: bottomSheetLocationValidator,
                     style: const TextStyle(
                       fontSize: 16,
@@ -111,31 +138,6 @@ class _SettingPageState extends State<SettingPage> {
                       floatingLabelBehavior: FloatingLabelBehavior.auto,
                       alignLabelWithHint: true,
                     ),
-                  ),
-                ),
-                const SizedBox(height: 16.0),
-                Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 15.0),
-                  child: DropdownButtonFormField<String>(
-                    borderRadius: BorderRadius.circular(10),
-                    decoration: const InputDecoration(labelText: 'صنف چندم؟'),
-                    items: [
-                      '1',
-                      '2',
-                      '3',
-                      '4',
-                    ]
-                        .map((option) => DropdownMenuItem(
-                              value: option,
-                              child: Text(option),
-                            ))
-                        .toList(),
-                    onChanged: (value) {
-                      setState(() {
-                        dropValue = value;
-                      });
-                      // Handle the selected value
-                    },
                   ),
                 ),
                 const SizedBox(height: 16.0),
@@ -176,7 +178,7 @@ class _SettingPageState extends State<SettingPage> {
                 ),
                 SizedBox(
                   height: MediaQuery.of(context).viewInsets.bottom,
-                )
+                ),
               ],
             ),
           ),
@@ -270,6 +272,13 @@ class _SettingPageState extends State<SettingPage> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) => const MemberPage()));
+                        }
+                        if (index == 2) {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const AssessmentPage()));
                         }
                       });
                 },

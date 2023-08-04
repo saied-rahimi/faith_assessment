@@ -1,7 +1,6 @@
-import 'package:faith_assessment/prefrences.dart';
+import 'package:faith_assessment/preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../model/my_dialog.dart';
 import 'details_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -73,21 +72,21 @@ class _HomePageState extends State<HomePage> {
             child: ListView.builder(
               itemCount: memberData.length,
               itemBuilder: (context, index) {
-                // String todo = todos.keys.toList()[index];
-                // bool isCompleted = todos[todo]!;
                 return ListTile(
                   onTap: () {
                     Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => DetailsPage(
-                                  data: memberData[index],
-                                )));
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DetailsPage(
+                          name: memberData[index]['name'],
+                        ),
+                      ),
+                    );
                   },
                   title: Text(
                     memberData[index]['name'].toString(),
                     style: const TextStyle(
-                        fontSize: 20, fontWeight: FontWeight.bold
+                        fontSize: 16, fontWeight: FontWeight.bold
                         // decoration:
                         // isCompleted ? TextDecoration.lineThrough : null,
                         ),
@@ -101,7 +100,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                   ),
                   trailing: Text(
-                    memberData[index]['createdAt'].toString(),
+                    memberData[index]['date'].toString(),
                     style: TextStyle(color: Colors.grey[400]),
                   ),
                   // onLongPress: () => removeTodo(todo),
