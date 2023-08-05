@@ -12,7 +12,14 @@ class MyNavigationBar extends StatefulWidget {
 }
 
 class _MyNavigationBarState extends State<MyNavigationBar> {
-  int currentIndex = 0;
+  late int currentIndex;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    currentIndex = widget.page ?? 0;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,17 +38,14 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
               ),
               label: 'تنظیمات')
         ],
-        selectedIndex: widget.page ?? currentIndex,
+        selectedIndex: currentIndex,
         onDestinationSelected: (index) {
           setState(() {
             currentIndex = index;
           });
         },
       ),
-      body: [
-        const HomePage(),
-        const SettingPage()
-      ][widget.page ?? currentIndex],
+      body: [const HomePage(), const SettingPage()][currentIndex],
     );
   }
 }

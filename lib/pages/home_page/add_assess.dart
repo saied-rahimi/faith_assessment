@@ -30,11 +30,19 @@ class _AddAssessState extends State<AddAssess> {
     setState(() {
       assessmentList = data;
     });
+    assessmentList.sort((a, b) => a['type'].compareTo(b['type']));
+    try {
+      var data = await MyPref().getUserAssessment();
+      assessmentData = data;
+    } catch (e) {
+      debugPrint('getting assessmentDate error is: $e');
+    }
 
     updateControllers();
   }
 
   updateControllers() {
+    assessValue = [];
     for (var item in assessmentList) {
       switch (item['type']) {
         case 'متن':
@@ -44,11 +52,23 @@ class _AddAssessState extends State<AddAssess> {
         case 'چک باکس':
           {
             assessValue.add(false);
-
             // assessCheckValue.add(false);
           }
+          assessValue.sort((a, b) {
+            // Check if both elements have the same datatype
+            if (a.runtimeType == b.runtimeType) {
+              // If they have the same datatype, compare them normally
+              return a.toString().compareTo(b.toString());
+            } else {
+              // If they have different datatypes, sort them based on the type name
+              return a.runtimeType
+                  .toString()
+                  .compareTo(b.runtimeType.toString());
+            }
+          });
       }
     }
+    setState(() {});
   }
 
   String format1(Date d) {
@@ -168,17 +188,16 @@ class _AddAssessState extends State<AddAssess> {
                     // Handle the button click
                     if (bottomSheetGlobalKey.currentState!.validate()) {
                       if (dropValue != null) {
-                        assessValue = [];
-
                         assessmentList.add({
                           'title': bottomSheetTextController.text,
                           'type': dropValue,
                         });
-                        Navigator.pop(context);
                         // if (toAllCheck) {
                         setState(() {
                           // assessmentList = [];
                         });
+                        assessmentList
+                            .sort((a, b) => a['type'].compareTo(b['type']));
                         try {
                           MyPref().setAssessData(assessmentList);
                         } catch (e) {
@@ -190,6 +209,13 @@ class _AddAssessState extends State<AddAssess> {
                         setState(() {
                           // assessmentList = [];
                         });
+                        Navigator.pop(context);
+                        Navigator.pop(context);
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => AddAssess(
+                                    name: widget.name, data: widget.data)));
                       } else {
                         showSnackBarText('نوع فرم انتخاب نشد!', context);
                       }
@@ -328,7 +354,7 @@ class _AddAssessState extends State<AddAssess> {
             padding: const EdgeInsets.all(8.0),
             child: ElevatedButton(
               onPressed: () {
-                List assessList = assessmentList;
+                List<dynamic> assessList = assessmentList;
                 for (int i = 0; i < assessList.length; i++) {
                   switch (assessList[i]['type']) {
                     case 'متن':
@@ -337,6 +363,7 @@ class _AddAssessState extends State<AddAssess> {
                       }
                     case 'چک باکس':
                       {
+
                         assessList[i]['value'] = assessValue[i];
                       }
                   }

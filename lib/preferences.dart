@@ -2,17 +2,17 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert'; // For using jsonEncode and jsonDecode
 
 class MyPref {
-  void setMemberData(List<dynamic> dataList) async {
+  void setMemberData(Map<String, dynamic> dataMap) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String jsonData = jsonEncode(dataList);
+    String jsonData = jsonEncode(dataMap);
     await prefs.setString('memberData', jsonData);
   }
 
-  Future<List<dynamic>> getMemberData() async {
+  Future<Map<String, dynamic>> getMemberData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String jsonData = prefs.getString('memberData') ?? '[]';
-    List<dynamic> dataList = jsonDecode(jsonData);
-    return dataList;
+    String jsonData = prefs.getString('memberData') ?? '{}';
+    Map<String, dynamic> dataMap = jsonDecode(jsonData);
+    return dataMap;
   }
 
   void setUserAssessment(Map<String, dynamic> dataMap) async {

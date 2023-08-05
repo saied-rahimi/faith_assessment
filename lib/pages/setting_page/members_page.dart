@@ -17,9 +17,11 @@ class _MemberPageState extends State<MemberPage> {
   late GlobalKey<FormState> bottomSheetJobKey;
   late TextEditingController bottomSheetAgeController;
   late GlobalKey<FormState> bottomSheetAgeKey;
-  List memberList = [];
+  Map<String, dynamic> membersData = {};
   String manager = '0';
   String level = '0';
+  List valuesList = [];
+  List keysList = [];
 
   String? bottomSheetNameValidator(value) {
     if (value.isEmpty) {
@@ -159,7 +161,6 @@ class _MemberPageState extends State<MemberPage> {
                     // Handle the button click
                     if (bottomSheetNameKey.currentState!.validate()) {
                       Map data = {
-                        'name': bottomSheetNameController.text.toString(),
                         'job': bottomSheetJobController.text.toString(),
                         'age': bottomSheetAgeController.text.toString(),
                         'location':
@@ -167,9 +168,11 @@ class _MemberPageState extends State<MemberPage> {
                       };
 
                       setState(() {
-                        memberList.add(data);
+                        membersData[bottomSheetNameController.text.toString()] =
+                            data;
                       });
-
+                      valuesList = membersData.values.toList();
+                      keysList = membersData.keys.toList();
                       Navigator.pop(context);
                     }
                   },
@@ -191,13 +194,17 @@ class _MemberPageState extends State<MemberPage> {
       var data = await MyPref().getMemberData();
       debugPrint('getMemberData is: $data');
       setState(() {
-        memberList = data;
+        membersData = data;
       });
+      valuesList = membersData.values.toList();
+      keysList = membersData.keys.toList();
     } catch (e) {
       debugPrint('getting member data pref error is: $e');
     }
     try {
       var data = await MyPref().getManagerData();
+      debugPrint('keysList is: $data');
+
       manager = data['name'];
       level = data['level'];
     } catch (e) {
@@ -243,7 +250,7 @@ class _MemberPageState extends State<MemberPage> {
           children: [
             Expanded(
               child: ListView.builder(
-                itemCount: memberList.length,
+                itemCount: keysList.length,
                 itemBuilder: (context, index) {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -251,18 +258,18 @@ class _MemberPageState extends State<MemberPage> {
                     children: [
                       ListTile(
                         title: Text(
-                          '${memberList[index]['name']}',
+                          '${keysList[index]}',
                           style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                               height: 1.8),
                         ),
                         subtitle: Text(
-                          'شغل: ${memberList[index]['job']}    '
-                          'سن: ${memberList[index]['age']}   '
+                          'شغل: ${valuesList[index]['job']}    '
+                          'سن: ${valuesList[index]['age']}   '
                           'مدیر: $manager   \n'
                           'صنف: $level   '
-                          'محل سکونت: ${memberList[index]['location']}',
+                          'محل سکونت: ${valuesList[index]['location']}',
                           style: TextStyle(
                               color: Colors.grey[400], fontSize: 14, height: 2),
                         ),
@@ -277,7 +284,7 @@ class _MemberPageState extends State<MemberPage> {
               padding: const EdgeInsets.all(8.0),
               child: ElevatedButton(
                 onPressed: () async {
-                  MyPref().setMemberData(memberList);
+                  MyPref().setMemberData(membersData);
                   Navigator.pop(context);
                 },
                 child: const Text('ذخیره'),

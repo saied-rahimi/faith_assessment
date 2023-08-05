@@ -174,7 +174,7 @@ class _SettingPageState extends State<SettingPage> {
                       }
                     }
                   },
-                  child: const Text('Save'),
+                  child: const Text('ذخیره'),
                 ),
                 SizedBox(
                   height: MediaQuery.of(context).viewInsets.bottom,
@@ -233,7 +233,7 @@ class _SettingPageState extends State<SettingPage> {
             const SizedBox(
               height: 10,
             ),
-            managerData != null
+            managerData?['name'] != null
                 ? Text(
                     "مدیر: ${managerData!['name']}",
                     style: TextStyle(color: Colors.grey[400], fontSize: 13),
@@ -261,17 +261,22 @@ class _SettingPageState extends State<SettingPage> {
                       ),
                       trailing: const Icon(
                         Icons.arrow_forward_ios_rounded,
-                        size: 20,
+                        size: 16,
                       ),
                       onTap: () {
                         if (index == 0) {
                           _showBottomSheet(context);
                         }
                         if (index == 1) {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const MemberPage()));
+                          if (managerData!['name'] != null) {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const MemberPage()));
+                          } else {
+                            showSnackBarText('ابتدا باید حساب بسازید!', context,
+                                vMargin: 25);
+                          }
                         }
                         if (index == 2) {
                           Navigator.push(
