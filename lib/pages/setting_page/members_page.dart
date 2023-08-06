@@ -61,9 +61,6 @@ class _MemberPageState extends State<MemberPage> {
                     ),
                     textInputAction: TextInputAction.next,
                     decoration: InputDecoration(
-                      hintText: 'نام و تخلص مدیر برنامه',
-                      hintStyle:
-                          TextStyle(color: Colors.grey[400], fontSize: 12),
                       border: OutlineInputBorder(
                           gapPadding: 10,
                           borderRadius: BorderRadius.circular(10),

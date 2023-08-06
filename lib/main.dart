@@ -26,8 +26,6 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         fontFamily: 'iransans',
         useMaterial3: true,
-        primarySwatch: Colors.blueGrey,
-        primaryColor: Colors.blueGrey,
       ),
       home: const HomeScreen(),
     );
